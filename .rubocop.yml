@@ -1,0 +1,59 @@
+require: rubocop-rails
+
+AllCops:
+  TargetRubyVersion: 3.2.0
+  NewCops: enable
+  Exclude:
+    - .git/**/*
+    - bin/**/*
+    - db/schema.rb
+    - log/**/*
+    - storage/**/*
+    - tmp/**/*
+    - vendor/**/*
+
+Layout/CaseIndentation:
+  EnforcedStyle: end
+Layout/EndAlignment:
+  EnforcedStyleAlignWith: variable
+Layout/EndOfLine:
+  EnforcedStyle: lf
+Layout/LineLength:
+  Max: 120
+  Exclude:
+    - lib/tasks/**/*
+    - spec/factories/**/*
+Layout/MultilineMethodCallIndentation:
+  EnforcedStyle: indented
+
+Lint/MissingSuper:
+  Enabled: false
+
+Metrics/BlockLength:
+  Exclude:
+    - spec/**/*
+    - config/environments/*
+    - config/initializers/*
+    - db/seeds.rb
+Metrics/MethodLength:
+  Max: 15
+  Exclude:
+    - db/**/*
+    - lib/tasks/**/*
+    - spec/**/*
+
+Style/AsciiComments:
+  Enabled: false
+Style/ClassAndModuleChildren:
+  Enabled: false
+Style/Documentation:
+  Enabled: false
+Style/FrozenStringLiteralComment:
+  Exclude:
+    - app/views/**/*
+Style/Lambda:
+  EnforcedStyle: literal
+Style/MixinGrouping:
+  EnforcedStyle: grouped
+Style/RedundantRegexpCharacterClass:
+  Enabled: false

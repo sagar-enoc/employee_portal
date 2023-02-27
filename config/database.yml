@@ -1,0 +1,22 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  min_messages: warning
+  host: "<%= ENV.fetch('PG_HOST') %>"
+  username: "<%= ENV.fetch('PG_USER') %>"
+  password: "<%= ENV.fetch('PG_PASSWORD') %>"
+  pool: "<%= Integer(ENV.fetch('API_DB_POOL', 5)) %>"
+
+development:
+  <<: *default
+  database: employee_portal_development
+
+test:
+  <<: *default
+  database: employee_portal_test
+
+production:
+  <<: *default
+  database: employee_portal_production
+  sslmode: require
+  timeout: 5000
