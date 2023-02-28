@@ -30,3 +30,8 @@
 
 # Ignore Env variables file
 .env
+
+/coverage/
+/.DS_Store
+/**/.DS_Store
+/vendor/bundle
