@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
+  namespace :status do
+    root to: 'health_check#index'
+  end
 
-  # Defines the root path route ("/")
-  # root "articles#index"
+  root to: 'status/health_check#index'
 end

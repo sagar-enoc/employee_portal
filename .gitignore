@@ -28,7 +28,7 @@
 # Ignore master key for decrypting credentials and more.
 /config/master.key
 
-# Ignore Env variables file
+# Ignore ENV variables file
 .env
 
 /coverage/

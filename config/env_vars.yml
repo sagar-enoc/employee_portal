@@ -1,0 +1,2 @@
+shared:
+  api_secret: "<%= ENV.fetch('API_SECRET', 'secret') %>"

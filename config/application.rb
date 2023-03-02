@@ -37,5 +37,10 @@ module EmployeePortal
     # Middleware like session, flash, cookies can be added back manually.
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
+
+    config.eager_load_paths << "#{config.root}/lib"
+    config.generators { |g| g.orm :active_record, primary_key_type: :uuid }
+    config.time_zone = 'UTC'
+    config.env_vars = config_for(:env_vars)
   end
 end
