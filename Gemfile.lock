@@ -199,8 +199,6 @@ GEM
       unicode-display_width (>= 2.4.0, < 3.0)
     rubocop-ast (1.26.0)
       parser (>= 3.2.1.0)
-    rubocop-capybara (2.17.1)
-      rubocop (~> 1.41)
     rubocop-faker (1.1.0)
       faker (>= 2.12.0)
       rubocop (>= 0.82.0)
@@ -208,9 +206,6 @@ GEM
       activesupport (>= 4.2.0)
       rack (>= 1.1)
       rubocop (>= 1.33.0, < 2.0)
-    rubocop-rspec (2.18.1)
-      rubocop (~> 1.33)
-      rubocop-capybara (~> 2.17)
     ruby-progressbar (1.11.0)
     simplecov (0.22.0)
       docile (~> 1.1)
@@ -246,7 +241,6 @@ DEPENDENCIES
   rspec-rails
   rubocop-faker
   rubocop-rails
-  rubocop-rspec
   simplecov
   timecop
   tzinfo-data

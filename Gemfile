@@ -20,7 +20,6 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'rubocop-faker'
   gem 'rubocop-rails', require: false
-  gem 'rubocop-rspec', require: false
   gem 'timecop', require: false
 end
 
