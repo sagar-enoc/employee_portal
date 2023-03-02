@@ -6,4 +6,8 @@ Rails.application.routes.draw do
   end
 
   root to: 'status/health_check#index'
+
+  namespace :v1 do
+    resources :employees, only: :index
+  end
 end
