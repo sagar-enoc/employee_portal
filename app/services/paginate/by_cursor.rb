@@ -12,15 +12,26 @@ class Paginate::ByCursor < Paginate::Base
     raise Error::V1::ArgumentError, I18n.t("v1.errors.pagination.#{error_key}")
   end
 
+  # Returning to make sure response will have basic information about paginated meta_data.
+  def meta_data
+    {
+      per_page: per_page,
+      before_cursor: result_cursor_keys.first,
+      after_cursor: result_cursor_keys.last
+    }
+  end
+
   private
 
   attr_reader :allowed_cursor_keys
 
   def results
-    scope.all
-      .then { |s| apply_keyset(s) }
-      .then { |s| s.order(default_order) }
-      .then { |s| s.limit(per_page) }
+    @results ||=
+      scope.all
+        .then { |s| apply_keyset(s) }
+        .then { |s| s.order(default_order) }
+        .then { |s| s.limit(per_page) }
+        .to_a
   end
 
   def valid_params?
@@ -36,11 +47,15 @@ class Paginate::ByCursor < Paginate::Base
 
   def apply_keyset(scope)
     if query[:before_cursor].present?
-      scope.where("#{query[:cursor_key]} < ?", query[:before_cursor])
+      scope.where("#{query[:cursor_key]} > ?", query[:before_cursor])
     elsif query[:after_cursor].present?
-      scope.where("#{query[:cursor_key]} > ?", query[:after_cursor])
+      scope.where("#{query[:cursor_key]} < ?", query[:after_cursor])
     else
       scope
     end
+  end
+
+  def result_cursor_keys
+    @result_keys_array ||= results.pluck(query[:cursor_key].to_sym)
   end
 end

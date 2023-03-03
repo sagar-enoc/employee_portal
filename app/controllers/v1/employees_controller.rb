@@ -5,6 +5,7 @@ class V1::EmployeesController < V1Controller
 
   def index
     @employees = paginate_scope
+    @page_meta_data = page_meta_data
   end
 
   private

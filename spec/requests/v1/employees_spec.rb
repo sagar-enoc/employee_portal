@@ -10,12 +10,14 @@ RSpec.describe 'V1 Employees' do
   describe 'GET /v1/employees' do
     let(:employee0) { create :employee }
     let(:employee1) { create :employee }
+    let(:employee2) { create :employee }
     let(:request_params) { {} }
     let(:request) { get v1_employees_path, headers: request_header, params: request_params }
 
     before do
       Timecop.freeze(3.days.ago) { employee0.reload }
-      Timecop.freeze(1.day.ago) { employee1.reload }
+      Timecop.freeze(2.days.ago) { employee1.reload }
+      Timecop.freeze(1.day.ago) { employee2.reload }
       request
     end
 
@@ -32,35 +34,45 @@ RSpec.describe 'V1 Employees' do
         context 'when pagination params not available' do
           let(:expected_response_format) do
             {
-              id: employee1.id,
-              emp_id: employee1.emp_id,
-              email: employee1.email,
-              full_name: employee1.full_name,
-              address: employee1.address,
-              phone_number: employee1.phone_number,
-              created_at: employee1.created_at
+              id: employee2.id,
+              emp_id: employee2.emp_id,
+              email: employee2.email,
+              full_name: employee2.full_name,
+              address: employee2.address,
+              phone_number: employee2.phone_number,
+              created_at: employee2.created_at
             }.as_json.deep_symbolize_keys
           end
 
           it { expect(json_data[0]).to eq expected_response_format }
 
           it 'fetch ordered the employees by #created_at desc' do
-            expect(json_data[0][:id]).to eq employee1.id
-            expect(json_data[1][:id]).to eq employee0.id
+            expect(json_data[0][:id]).to eq employee2.id
+            expect(json_data[2][:id]).to eq employee0.id
           end
         end
 
         context 'when pagination params available' do
           context 'when requested page is available' do
-            let(:request_params) { { per_page: 1, page: 2 } }
+            let(:request_params) { { per_page: 1, page: 3 } }
+            let(:pagination) do
+              {
+                per_page: 1,
+                current_page: 3,
+                total_count: 3,
+                total_pages: 3
+              }
+            end
 
             it 'fetch the records for requested page' do
               expect(json_data[0][:id]).to eq employee0.id
             end
+
+            it { expect(json_pagination).to eq(pagination) }
           end
 
           context 'when requested page is not available' do
-            let(:request_params) { { per_page: 1, page: 3 } }
+            let(:request_params) { { per_page: 1, page: 4 } }
 
             it { expect(json_data).to be_empty }
           end
@@ -83,23 +95,31 @@ RSpec.describe 'V1 Employees' do
         end
 
         context 'when valid params' do
-          let(:request_params) { { before_cursor: employee1.emp_id, cursor_key: :emp_id } }
+          let(:request_params) { { after_cursor: employee1.emp_id, cursor_key: :emp_id } }
 
           it { expect(json_data.size).to eq 1 }
           it { expect(json_data[0][:id]).to eq employee0.id }
         end
 
         context 'when valid params' do
-          let(:request_params) { { after_cursor: employee1.emp_id, cursor_key: :emp_id } }
+          let(:request_params) { { before_cursor: employee2.emp_id, cursor_key: :emp_id } }
 
           it { expect(json_data).to be_empty }
         end
 
         context 'when valid params' do
-          let(:request_params) { { after_cursor: employee0.emp_id, cursor_key: :emp_id } }
+          let(:request_params) { { before_cursor: employee0.emp_id, cursor_key: :emp_id } }
+          let(:pagination) do
+            {
+              per_page: 100,
+              after_cursor: employee1.emp_id,
+              before_cursor: employee2.emp_id
+            }
+          end
 
-          it { expect(json_data.size).to eq 1 }
-          it { expect(json_data[0][:id]).to eq employee1.id }
+          it { expect(json_data.size).to eq 2 }
+          it { expect(json_data[0][:id]).to eq employee2.id }
+          it { expect(json_pagination).to eq(pagination) }
         end
       end
     end

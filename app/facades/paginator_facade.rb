@@ -10,9 +10,9 @@ class PaginatorFacade < Base
 
   def call
     if request_by_cursor?
-      Paginate::ByCursor.call(scope:, query:, default_order:, allowed_cursor_keys:)
+      Paginate::ByCursor.new(scope:, query:, default_order:, allowed_cursor_keys:)
     else
-      Paginate::ByDeferredJoin.call(scope:, query:, default_order:)
+      Paginate::ByDeferredJoin.new(scope:, query:, default_order:)
     end
   end
 

@@ -13,6 +13,14 @@ module HelperRequest
     parsed_response_body[:errors]
   end
 
+  def json_meta
+    parsed_response_body[:meta]
+  end
+
+  def json_pagination
+    json_meta[:pagination]
+  end
+
   %i[get post patch].each do |method|
     define_method(method) do |url, *attrs|
       # Inject 'Content-Type' in every request headers by default.
