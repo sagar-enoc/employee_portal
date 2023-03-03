@@ -3,3 +3,7 @@ en:
     errors:
       authentication:
         invalid_token: Invalid Secret Token.
+      pagination:
+        missing_cursors: Must specify eithe before_cursor or after_cursor
+        missing_cursor_key: cursor_key is missing.
+        cursor_key_not_allowed: cursor_key is not allowed for paginating records.

@@ -8,6 +8,8 @@ module ErrorHandler
 
       # 4xx
       rescue_from Error::V1::AuthenticationInvalid, with: :authentication_error
+      rescue_from Error::V1::ArgumentError, with: :bad_request_error
+
       rescue_from ActionController::BadRequest, with: :bad_request_error
       rescue_from ActionController::UnknownHttpMethod, with: :bad_request_error
     end

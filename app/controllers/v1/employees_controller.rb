@@ -16,4 +16,8 @@ class V1::EmployeesController < V1Controller
   def default_order
     'created_at desc'
   end
+
+  def allowed_cursor_keys
+    %i[created_at emp_id]
+  end
 end
