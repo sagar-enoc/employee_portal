@@ -12,15 +12,6 @@ class Paginate::ByCursor < Paginate::Base
     raise Error::V1::ArgumentError, I18n.t("v1.errors.pagination.#{error_key}")
   end
 
-  # Returning to make sure response will have basic information about paginated meta_data.
-  def meta_data
-    {
-      per_page: per_page,
-      before_cursor: result_cursor_keys.first,
-      after_cursor: result_cursor_keys.last
-    }
-  end
-
   private
 
   attr_reader :allowed_cursor_keys
@@ -53,9 +44,5 @@ class Paginate::ByCursor < Paginate::Base
     else
       scope
     end
-  end
-
-  def result_cursor_keys
-    @result_keys_array ||= results.pluck(query[:cursor_key].to_sym)
   end
 end

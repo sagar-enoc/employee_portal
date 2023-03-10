@@ -5,7 +5,7 @@ class Paginate::Base < Base
   MAX_PER_PAGE = 500
   private_constant :DEFAULT_PER_PAGE, :MAX_PER_PAGE
 
-  def initialize(scope:, query:, default_order:)
+  def initialize(scope:, query:, default_order: nil)
     @scope = scope
     @query = query
     @default_order = default_order

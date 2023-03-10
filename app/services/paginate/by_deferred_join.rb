@@ -7,15 +7,7 @@ class Paginate::ByDeferredJoin < Paginate::Base
   def call
     scope.all
       .then { |s| s.joins(format(JOIN_QUERY, page_query, scope.table_name)) }
-  end
-
-  def meta_data
-    {
-      per_page: per_page,
-      current_page: page,
-      total_count: total_count,
-      total_pages: total_pages
-    }
+      .then { |s| s.order(default_order) }
   end
 
   private
@@ -27,13 +19,5 @@ class Paginate::ByDeferredJoin < Paginate::Base
       .limit(per_page)
       .offset(offset)
       .to_sql
-  end
-
-  def total_count
-    @total_count ||= scope.unscope(:limit, :offset).size
-  end
-
-  def total_pages
-    (total_count / per_page.to_f).ceil
   end
 end
